@@ -1,0 +1,20 @@
+#!/bin/bash
+
+echo "======BUILDING======"
+if [[ "$OSTYPE" == "msys" ]]; then
+  go build -o main.exe .
+elif [[ "$OSTYPE" == "win32" ]]; then
+  go build -o main.exe .
+elif [[ "$OSTYPE" == "win64" ]]; then
+  go build -o main.exe .
+else
+  go build -o main .
+fi
+echo "=====BUILD DONE====="
+echo "=======TESTING======="
+go clean --testcache
+godotenv -f .env.test go test -p 1 ./.../tests -tags=all -v
+RESULT=$?
+[ $RESULT -ne 0 ] && exit 1
+exit 0
+echo "=====TESTING DONE===="

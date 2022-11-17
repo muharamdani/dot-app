@@ -7,7 +7,7 @@ import (
 )
 
 func Router(r *gin.RouterGroup) {
-	r.POST("/", controllers.Create)
-	r.PATCH("/:id", controllers.Patch)
-	r.DELETE("/:id", controllers.Delete)
+	r.POST("/comments", controllers.Create)
+	r.PATCH("/comments/:id", controllers.Patch)
+	r.DELETE("/comments/:id", controllers.Delete)
 }

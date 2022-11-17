@@ -8,9 +8,6 @@ import (
 )
 
 func Router(r *gin.RouterGroup) {
-	articlesGroup := r.Group("/articles")
-	articles.Router(articlesGroup)
-
-	commentsGroup := r.Group("/comments")
-	comments.Router(commentsGroup)
+	articles.Router(r)
+	comments.Router(r)
 }

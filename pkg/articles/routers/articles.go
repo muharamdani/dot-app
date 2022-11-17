@@ -7,10 +7,10 @@ import (
 )
 
 func Router(r *gin.RouterGroup) {
-	r.POST("/", controllers.Create)
-	r.GET("/", controllers.Index)
-	r.GET("/:id", controllers.Show)
-	r.PUT("/:id", controllers.Update)
-	r.PATCH("/:id", controllers.Patch)
-	r.DELETE("/:id", controllers.Delete)
+	r.POST("/articles", controllers.Create)
+	r.GET("/articles", controllers.Index)
+	r.GET("/articles/:id", controllers.Show)
+	r.PUT("/articles/:id", controllers.Update)
+	r.PATCH("/articles/:id", controllers.Patch)
+	r.DELETE("/articles/:id", controllers.Delete)
 }
