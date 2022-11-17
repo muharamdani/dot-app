@@ -23,7 +23,7 @@ func Create(c *gin.Context) {
 	services.CreateOrUpdate(&req, &ar)
 
 	if err := repositories.Create(db.DB, &ar); err != nil {
-		http.ResponseInternalServerError(c, "Something went wrong", nil)
+		http.ResponseInternalServerError(c, "Something went wrong", err)
 		return
 	}
 
@@ -41,16 +41,16 @@ func Index(c *gin.Context) {
 	}
 
 	if err := repositories.Index(db.DB, &articles, &paginate); err != nil {
-		http.ResponseInternalServerError(c, "Something went wrong", nil)
+		http.ResponseInternalServerError(c, "Something went wrong", err)
 		return
 	}
 
 	if err := repositories.Count(db.DB, &getCount); err != nil {
-		http.ResponseInternalServerError(c, "Something went wrong", nil)
+		http.ResponseInternalServerError(c, "Something went wrong", err)
 		return
 	}
 
-	if paginate.Paginate == false {
+	if !paginate.Paginate {
 		http.ResponsePaginate(c, "Get articles data success", articles, getCount, 1, getCount)
 		return
 	}
@@ -60,7 +60,7 @@ func Index(c *gin.Context) {
 }
 
 func Show(c *gin.Context) {
-	var article requests.ArticleShow
+	var article models.Article
 
 	id, err := uuid.FromString(c.Param("id"))
 	if err != nil {
@@ -69,7 +69,7 @@ func Show(c *gin.Context) {
 	}
 
 	if err := repositories.Show(db.DB, &article, id); err != nil {
-		http.ResponseInternalServerError(c, "Something went wrong", nil)
+		http.ResponseNotFound(c, "Data not found")
 		return
 	}
 
@@ -90,10 +90,16 @@ func Update(c *gin.Context) {
 		return
 	}
 
+	// Find by id first
+	if err := repositories.Show(db.DB, &ar, id); err != nil {
+		http.ResponseNotFound(c, "Data not found")
+		return
+	}
+
 	services.CreateOrUpdate(&req, &ar)
 
 	if err := repositories.Update(db.DB, &ar, id); err != nil {
-		http.ResponseInternalServerError(c, "Something went wrong", nil)
+		http.ResponseInternalServerError(c, "Something went wrong", err)
 		return
 	}
 
@@ -114,7 +120,7 @@ func Patch(c *gin.Context) {
 	}
 
 	if err := repositories.Patch(db.DB, &req, id); err != nil {
-		http.ResponseInternalServerError(c, "Something went wrong", nil)
+		http.ResponseInternalServerError(c, "Something went wrong", err)
 		return
 	}
 
@@ -129,7 +135,7 @@ func Delete(c *gin.Context) {
 	}
 
 	if err := repositories.Delete(db.DB, id); err != nil {
-		http.ResponseInternalServerError(c, "Something went wrong", nil)
+		http.ResponseInternalServerError(c, "Something went wrong", err)
 		return
 	}
 

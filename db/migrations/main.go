@@ -15,5 +15,6 @@ func Execute(db *gorm.DB) {
 
 	MigrateArticlesTable(db)
 	MigrateCommentsTable(db)
+	MigrateAddParentIdInComments(db)
 	log.Println("---Migration success---")
 }

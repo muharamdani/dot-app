@@ -1,23 +1,9 @@
 package requests
 
-import (
-	"dot-app/pkg/comments/models"
-
-	"github.com/gofrs/uuid"
-)
-
 type ArticleRequest struct {
 	Title   string `json:"title" binding:"required"`
 	Content string `json:"content" binding:"required"`
 	Author  string `json:"author" binding:"required"`
-}
-
-type ArticleShow struct {
-	Id       uuid.UUID        `json:"id"`
-	Title    string           `json:"title"`
-	Content  string           `json:"content"`
-	Author   string           `json:"author"`
-	Comments []models.Comment `json:"comments" gorm:"foreignKey:ArticleId;references:Id"`
 }
 
 type ArticlePatch struct {
@@ -35,10 +21,6 @@ type Paginate struct {
 }
 
 func (ArticleRequest) TableName() string {
-	return "articles"
-}
-
-func (ArticleShow) TableName() string {
 	return "articles"
 }
 

@@ -8,6 +8,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 func Create(db *gorm.DB, out *models.Article) error {
@@ -29,8 +30,12 @@ func Index(db *gorm.DB, out *[]models.Article, paginate *requests.Paginate) erro
 	return db1.Limit(paginate.PerPage).Offset(paginate.PerPage * (paginate.Page - 1)).Find(&out).Error
 }
 
-func Show(db *gorm.DB, out *requests.ArticleShow, id uuid.UUID) error {
-	return db.Model(&out).Preload("Comments").First(out, id).Error
+func Show(db *gorm.DB, out *models.Article, id uuid.UUID) error {
+	return db.Model(&out).Preload(clause.Associations, commentPreload).First(out, id).Error
+}
+
+func commentPreload(db *gorm.DB) *gorm.DB {
+	return db.Preload("Comments", commentPreload)
 }
 
 func Update(db *gorm.DB, out *models.Article, id uuid.UUID) error {
