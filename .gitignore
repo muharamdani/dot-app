@@ -1,2 +1,6 @@
 .idea/
 .env
+.air.toml
+tmp/
+main
+main.exe
