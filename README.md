@@ -89,3 +89,15 @@ package tests
 ```
  godotenv -f .env.test go test -p 1 ./.../tests -tags=all -v 
 ```
+
+## Reason why choosing this pattern
+- Clean Architecture
+- Testable
+- Scalable
+- Maintainable
+- Easy to understand
+- Easy to debug
+- Easy to add new feature
+
+## Postman Documentation
+https://documenter.getpostman.com/view/15745420/2s8YmPt1vP
